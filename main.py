@@ -44,7 +44,7 @@ def get_links(driver, url):
             if len(unique_links) == 20:
                 break
         count += 10
-        random.randint(5, 10)
+        time.sleep(random.randint(5, 10))
     return unique_links
 
 if __name__ == "__main__":
