@@ -30,22 +30,21 @@ SHEETS = {
 
 def get_links(driver, url):
 
-    driver.get(url)
-    links = [x.find_element(By.XPATH, "..").get_attribute("href") for x in driver.find_elements(By.TAG_NAME, "h3")]
     unique_links = []
-    for link in links:
-        if link and link.strip() and link not in unique_links:
-            unique_links.append(link.split("#")[0])
-        if len(unique_links) == 20:
-            break
-    if len(unique_links) < 20:
-        driver.get(url + "&start=10")
+    count = 0
+    while len(unique_links) < 20:
+        if len(unique_links) == 0:
+            driver.get(url)
+        else:
+            driver.get(url + f"&start={count}")
         links = [x.find_element(By.XPATH, "..").get_attribute("href") for x in driver.find_elements(By.TAG_NAME, "h3")]
         for link in links:
             if link and link.strip() and link not in unique_links:
                 unique_links.append(link.split("#")[0])
             if len(unique_links) == 20:
                 break
+        count += 10
+        random.randint(5, 10)
     return unique_links
 
 if __name__ == "__main__":
@@ -97,7 +96,7 @@ if __name__ == "__main__":
             unique_urls = []
             for row in url_rows:
                 for url in row[1:]:
-                    if url not in unique_urls:
+                    if url.strip() and url not in unique_urls:
                         unique_urls.append(url)
             work_sheet.update(f'A30:A{30+len(unique_urls)}', [[x] for x in unique_urls])
             positions = []
