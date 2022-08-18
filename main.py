@@ -18,10 +18,10 @@ def excel_style(row, col):
     return ''.join(result) + str(row)
 
 SHEETS = {
-    "United States": "1Cxp3hA6wu-fOJ1oynT3reFPiBowOjDlLOVm5tC_o5Os",
-    "Taiwan": "1Ce6DBGVsXM1MnhcgbyS2wIQcjy8IqN4grjIcb8495vU",
-    "Australia": "1QOGt3A4QN1krq8Kpfgj2Zchu9W9QkypY4aTYlQFnS7w",
-    "Spain": "1-2ncwONVf9HC-GiVCAHjvCioaelbFwkcrHtSg4qkC10",
+    # "United States": "1Cxp3hA6wu-fOJ1oynT3reFPiBowOjDlLOVm5tC_o5Os",
+    # "Taiwan": "1Ce6DBGVsXM1MnhcgbyS2wIQcjy8IqN4grjIcb8495vU",
+    # "Australia": "1QOGt3A4QN1krq8Kpfgj2Zchu9W9QkypY4aTYlQFnS7w",
+    # "Spain": "1-2ncwONVf9HC-GiVCAHjvCioaelbFwkcrHtSg4qkC10",
     "Netherlands": "1IjX88Vql0duEMP6sTZsEu3G-PT9OPY_Y4jHChnVLvtc",
     "Japan": "1TOHwSRNrKSuCV6CP2mtW3GY4CqM4LOqCkHkI5p7p0xE",
     "Italy": "1MGs2u62CZH7cscAvBS74DpeCuhKsHRYFAaLWIYhosdc",
@@ -68,7 +68,11 @@ if __name__ == "__main__":
             try:
                 work_sheet = sh.worksheet(query)
             except gspread.exceptions.WorksheetNotFound:
-                work_sheet = sh.add_worksheet(title=query, rows=100, cols=100)
+                try:
+                    work_sheet = sh.add_worksheet(title=query, rows=100, cols=100)
+                except Exception as e:
+                    logging.error(str(e))
+                    continue
             work_sheet.update("A1:B1", [["Query:", query]])
             work_sheet.format('A1:B1', {'textFormat': {'bold': True}})
             work_sheet.update("A3:A23", [["Position"]] + [[x] for x in range(1, 21)])
