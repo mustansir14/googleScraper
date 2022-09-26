@@ -51,13 +51,7 @@ def get_links(driver, url):
 
 if __name__ == "__main__":
 
-    gc = gspread.service_account()
-    options = Options()
-    options.headless = True
-    options.add_argument("window-size=1920,1080")
-    options.add_argument("--no-sandbox")
-    options.add_argument('--disable-dev-shm-usage')  
-    
+    gc = gspread.service_account() 
     
     for country, key in SHEETS.items():
         logging.info("Country: " + country)
@@ -67,6 +61,11 @@ if __name__ == "__main__":
         urls = input_sheet.col_values(2)[1:]
         for query, url in zip(queries, urls):
             logging.info("Searching query: " + query)
+            options = Options()
+            options.headless = True
+            options.add_argument("window-size=1920,1080")
+            options.add_argument("--no-sandbox")
+            options.add_argument('--disable-dev-shm-usage') 
             driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
             try:
                 work_sheet = sh.worksheet(query)
