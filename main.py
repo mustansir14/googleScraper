@@ -37,6 +37,7 @@ def get_links(driver, url):
             driver.get(url)
         else:
             driver.get(url + f"&start={count}")
+        print("yahan")
         links = [x.find_element(By.XPATH, "..").get_attribute("href") for x in driver.find_elements(By.TAG_NAME, "h3")]
         if len(links) == 0:
             raise Exception("Found no links... Blocked")
