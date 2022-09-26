@@ -46,7 +46,10 @@ def get_links(driver, url):
             if len(unique_links) == 20:
                 break
         count += 10
-        time.sleep(random.randint(30, 60))
+        logging.info("Going to next page")
+        t = random.randint(30, 60)
+        logging.info(f"Waiting for {t} seconds")
+        time.sleep(t)
     return unique_links
 
 if __name__ == "__main__":
@@ -124,7 +127,9 @@ if __name__ == "__main__":
                     
             work_sheet.update(f'B30:{excel_style(30+len(unique_urls), 1+len(dates))}', positions)
             work_sheet.format(f'B30:{excel_style(30+len(unique_urls), 1+len(dates))}', {"horizontalAlignment": "RIGHT"})
-            time.sleep(random.randint(30, 60))
+            t = random.randint(30, 60)
+            logging.info(f"Waiting for {t} seconds")
+            time.sleep(t)
 
         
 
