@@ -57,7 +57,7 @@ if __name__ == "__main__":
     options.add_argument("window-size=1920,1080")
     options.add_argument("--no-sandbox")
     options.add_argument('--disable-dev-shm-usage')  
-    driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
+    
     
     for country, key in SHEETS.items():
         logging.info("Country: " + country)
@@ -67,6 +67,7 @@ if __name__ == "__main__":
         urls = input_sheet.col_values(2)[1:]
         for query, url in zip(queries, urls):
             logging.info("Searching query: " + query)
+            driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
             try:
                 work_sheet = sh.worksheet(query)
             except gspread.exceptions.WorksheetNotFound:
@@ -90,6 +91,10 @@ if __name__ == "__main__":
             except Exception as e:
                 logging.error(str(e))
                 continue
+            try:
+                driver.quit()
+            except:
+                pass
             logging.info("Found results!!")
             work_sheet.update(f'{excel_style(4, col_num)}:{excel_style(23, col_num)}', [[x] for x in links])
             logging.info(str(len(links)) + " links added for query: " + query)
