@@ -70,6 +70,7 @@ if __name__ == "__main__":
             options.add_argument("--no-sandbox")
             options.add_argument('--disable-dev-shm-usage') 
             driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
+            print("here")
             try:
                 work_sheet = sh.worksheet(query)
             except gspread.exceptions.WorksheetNotFound:
