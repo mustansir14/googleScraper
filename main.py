@@ -38,13 +38,15 @@ def get_links(driver, url):
         else:
             driver.get(url + f"&start={count}")
         links = [x.find_element(By.XPATH, "..").get_attribute("href") for x in driver.find_elements(By.TAG_NAME, "h3")]
+        if len(links) == 0:
+            raise Exception("Found no links... Blocked")
         for link in links:
             if link and link.strip() and link not in unique_links:
                 unique_links.append(link.split("#")[0])
             if len(unique_links) == 20:
                 break
         count += 10
-        time.sleep(random.randint(5, 10))
+        time.sleep(random.randint(30, 60))
     return unique_links
 
 if __name__ == "__main__":
@@ -118,7 +120,7 @@ if __name__ == "__main__":
                     
             work_sheet.update(f'B30:{excel_style(30+len(unique_urls), 1+len(dates))}', positions)
             work_sheet.format(f'B30:{excel_style(30+len(unique_urls), 1+len(dates))}', {"horizontalAlignment": "RIGHT"})
-            time.sleep(random.randint(5, 15))
+            time.sleep(random.randint(30, 60))
 
         
 
